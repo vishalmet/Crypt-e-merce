@@ -31,3 +31,20 @@ export const GETALLPRODUCTS =async () => {
         console.error('Error fetching data:', error);
     }
 }
+
+export const ADDPRODUCTS= async ({ productName, category, description, price  }) => {
+  try {
+    const provider =
+      window.ethereum != null
+        ? new ethers.providers.Web3Provider(window.ethereum)
+        : ethers.providers.getDefaultProvider();
+
+    const signer = provider.getSigner();
+    const Role = new ethers.Contract(COMMERCE_CONTRACT, abi, signer);
+    const tokenId = await Role.addProduct(productName, category, description, price );
+    alert('Product places Successfully!');
+    return tokenId;
+  } catch (error) {
+    console.error('Error selling product:', error);
+  }   
+}

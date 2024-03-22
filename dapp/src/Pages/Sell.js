@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import app from '../firebase';
+import { ADDPRODUCTS } from '../ContractIntegration';
 
 const Sell = () => {
 
   const [image, setImage] = useState('');
-  const [sellerAddress, setSellerAddress] = useState('');
   const [productName, setProductName] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [productStatus, setProductStatus] = useState('');
+
 
 
   const handleSubmit = async (e) => {
+
+    alert("button clicked");
+    const tokenId = await ADDPRODUCTS({productName, category, description, price }); // Pass parameters as an object
+    console.log("productName", productName);
+    console.log("category", category);
+    console.log("description:", description);
+    console.log("price:", price);
+    console.log("tokenId:", tokenId);
+
     e.preventDefault();
     // Handle form submission, you can send the form data to your backend here
 
@@ -30,27 +39,17 @@ const Sell = () => {
     }
 
     console.log({
-      sellerAddress,
       productName,
       category,
       description,
-      price,
-      productStatus
+      price
+      
     });
   };
   return (
     <div className='flex items-center justify-center '>
-    <div onSubmit={handleSubmit} className="max-w-md w-full space-y-2">
-      <label htmlFor="seller_address" className='font-semibold text-md'>Seller Address:</label><br />
-      <input
-        className='border-black border-2 rounded-md px-3 py-1 w-full'
-        type="text"
-        id="seller_address"
-        value={sellerAddress}
-        onChange={(e) => setSellerAddress(e.target.value)}
-        required
-      /><br /><br />
-
+    <div className="max-w-md w-full space-y-2">
+    
       <label htmlFor="product_name" className='font-semibold text-md'>Product Name:</label><br />
       <input
         className='border-black border-2 rounded-md px-3 py-1 w-full'
@@ -96,15 +95,6 @@ const Sell = () => {
         required
       /><br /><br />
 
-      <label htmlFor="product_status" className='font-semibold text-md'>Product Status:</label><br />
-      <input
-        className='border-black border-2 rounded-md px-3 py-1 w-full'
-        type="text"
-        id="product_status"
-        value={productStatus}
-        onChange={(e) => setProductStatus(e.target.value)}
-        required
-      /><br /><br />
 
     
          <label htmlFor="image" className='font-semibold text-md'>Upload Image:</label><br />
@@ -118,7 +108,7 @@ const Sell = () => {
 
 
         
-        <button type="submit" value="Submit" className='border-2 border-red-400 text-xl font-bold  px-3 py-2 bg-red-400 rounded-lg hover:bg-black hover:border-white hover:text-red-600'>Submit</button>
+        <button type="submit"  onClick={handleSubmit} value="Submit" className='border-2 border-red-400 text-xl font-bold  px-3 py-2 bg-red-400 rounded-lg hover:bg-white hover:border-red-500 hover:text-red-600'>Submit</button>
       </div>
     </div>
   )
