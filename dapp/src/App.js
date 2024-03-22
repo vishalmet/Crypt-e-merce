@@ -11,7 +11,6 @@ function App() {
     <div>
     
          <Router>
-          <Button />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/buy" element={<Buy />} />
